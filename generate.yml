@@ -1,0 +1,35 @@
+---
+   - hosts: localhost
+     connection: local
+     tasks:
+        - include_vars: project.yml
+
+        - name: Create Ansible folders
+          file:
+            path: ./ansible/{{ item }}
+            state: directory
+          with_items:
+            - playbooks
+            - playbooks/roles
+            - playbooks/tasks
+            - inventory
+            - inventory/vars
+            - inventory/group_vars
+
+        - name: Generate requirements file
+          template:
+            src: ./templates/requirements.yml.j2
+            dest: ./ansible/requirements.yml
+          with_dict: "{{ requirements }}"
+    
+        - name: Generate hosts files
+          template:
+            src: ./templates/host.j2
+            dest: ./ansible/inventory/{{ item.key }}
+          with_dict: "{{ inventory }}"
+
+        - name: Generate vars files
+          template:
+            src: ./templates/var.j2
+            dest: ./ansible/inventory/vars/{{ item.key }}.yml
+          with_dict: "{{ inventory }}"

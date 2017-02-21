@@ -1,0 +1,8 @@
+[{{ project.project_name }}-{{ item.key }}]
+{{ item.value.fqdn }}
+
+{% for group in item.value.groups %}
+[{{ group }}:children]
+{{ project.project_name }}-{{ item.key }}
+
+{% endfor %}

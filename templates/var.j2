@@ -1,0 +1,7 @@
+---
+{% for key, value in item.value.requires.items() %}
+# {{ key }}
+{% for subkey, subvalue in value.items() %}
+{{ subkey }}: {{ subvalue }}
+{% endfor %}
+{% endfor %}
